@@ -20,6 +20,8 @@ public class Movment_Manager : MonoBehaviour
 
      public bool dragA;
 
+     public float dragD;
+
      private LineRenderer lineRenderer;
     // Start is called before the first frame update
     void Start()
@@ -51,7 +53,7 @@ public class Movment_Manager : MonoBehaviour
            lineRenderer.SetPosition(1, curPosition);
 
            distanC = Vector2.Distance(curScreenPoint, screenpoint);
-           if (distanC > 50)
+           if (distanC > dragD)
            {
 
              dragA = false;
@@ -72,7 +74,7 @@ public class Movment_Manager : MonoBehaviour
 
            distanC = Vector2.Distance(curScreenPoint, screenpoint);
 
-           if(distanC < 49)
+           if(distanC < dragD)
            {
              dragA = true;
            }

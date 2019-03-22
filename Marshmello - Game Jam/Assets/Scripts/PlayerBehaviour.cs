@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerBehaviour : MonoBehaviour {
 
     public float velocity;
@@ -19,6 +19,8 @@ public class PlayerBehaviour : MonoBehaviour {
 
     Vector2 yellow;
 
+    public bool ativeMove = true;
+
     [SerializeField] float counterUp = 1;
     float counterUpCurrent;
     [SerializeField] float counterRight = 1;
@@ -26,11 +28,17 @@ public class PlayerBehaviour : MonoBehaviour {
     [SerializeField] float counterDown = 1;
     float counterDownCurrent;
 
+    public Vector2 pos1;
+
+    public float maxdist;
+
+    public Vector2 pos2;
+
     // Start is called before the first frame update
     void Start () {
         rb2d = GetComponent<Rigidbody2D> ();
         force = new Vector2 (velocity, 0f);
-        rb2d.AddForce (force, ForceMode2D.Impulse);
+      //  rb2d.AddForce (force, ForceMode2D.Impulse);
     }
 
     // Update is called once per frame
@@ -38,7 +46,7 @@ public class PlayerBehaviour : MonoBehaviour {
         if (counterUpCurrent > 0) {
             counterUpCurrent -= Time.deltaTime;
         } else {
-            if (Input.GetKeyDown (KeyCode.UpArrow)) {
+            if (Input.GetKeyDown (KeyCode.UpArrow) && ativeMove == true) {
                 rb2d.AddForce (transform.up * dashSpeed, ForceMode2D.Impulse);
                 counterUpCurrent = counterUp;
             }
@@ -46,7 +54,7 @@ public class PlayerBehaviour : MonoBehaviour {
         if (counterRightCurrent > 0) {
             counterRightCurrent -= Time.deltaTime;
         } else {
-            if (Input.GetKeyDown (KeyCode.RightArrow)) {
+            if (Input.GetKeyDown (KeyCode.RightArrow) &&ativeMove == true) {
                 rb2d.AddForce (transform.right * dashSpeed, ForceMode2D.Impulse);
                 counterRightCurrent = counterRight;
             }
@@ -55,10 +63,24 @@ public class PlayerBehaviour : MonoBehaviour {
         if (counterDownCurrent > 0) {
             counterDownCurrent -= Time.deltaTime;
         } else {
-            if (Input.GetKeyDown (KeyCode.DownArrow)) {
+            if (Input.GetKeyDown (KeyCode.DownArrow) && ativeMove == true) {
                 rb2d.AddForce (transform.up * -dashSpeed, ForceMode2D.Impulse);
                 counterDownCurrent = counterDown;
             }
+        }
+
+        if (rb2d.velocity.x < 0.5 && rb2d.velocity.x > -0.5 && ativeMove == false)
+        {
+            pos2 = gameObject.transform.position;
+
+            maxdist = Vector2.Distance(pos2,pos1);
+            Debug.Log(maxdist);
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene("Final",LoadSceneMode.Single);
         }
     }
 
@@ -82,6 +104,14 @@ public class PlayerBehaviour : MonoBehaviour {
         }
         if (other.transform.tag == "Yellow") {
             YellowBehaviour ();
+        }
+
+        if (other.transform.tag == "Round_end")
+        {
+            ativeMove = false;
+            pos1 = gameObject.transform.position;
+            
+
         }
     }
 }

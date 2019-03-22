@@ -22,7 +22,7 @@ public class Bumper_01 : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
     Rigidbody2D rb = other.transform.GetComponent<Rigidbody2D>();
-    rb.AddForce( rb.velocity * _bumpSpeed, ForceMode2D.Impulse);
+    rb.AddForce( _bumpDirection * _bumpSpeed, ForceMode2D.Impulse);
 
 
     }
